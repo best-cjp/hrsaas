@@ -11,7 +11,7 @@ export default {
       path: '',
       component: () => import('@/views/attendances'),
       //左侧导航读取了这里的title信息
-      meta: { title: '考勤' }
+      meta: { title: '考勤', icon: 'skill' }
     }
   ]
 }

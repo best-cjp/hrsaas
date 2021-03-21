@@ -11,7 +11,7 @@ export default {
       path: '',
       component: () => import('@/views/setting'),
       //左侧导航读取了这里的title信息
-      meta: { title: '公司设置' }
+      meta: { title: '公司设置', icon: 'setting' }
     }
   ]
 }

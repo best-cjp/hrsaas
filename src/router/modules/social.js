@@ -11,7 +11,7 @@ export default {
       path: '',
       component: () => import('@/views/social'),
       //左侧导航读取了这里的title信息
-      meta: { title: '社保' }
+      meta: { title: '社保', icon: 'table' }
     }
   ]
 }

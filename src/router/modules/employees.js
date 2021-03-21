@@ -11,7 +11,7 @@ export default {
       path: '',
       component: () => import('@/views/employees'),
       //左侧导航读取了这里的title信息
-      meta: { title: '员工管理' }
+      meta: { title: '员工管理', icon: 'people' }
     }
   ]
 }

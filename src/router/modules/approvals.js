@@ -11,7 +11,7 @@ export default {
       path: '',
       component: () => import('@/views/approvals'),
       //左侧导航读取了这里的title信息
-      meta: { title: '审批' }
+      meta: { title: '审批', icon: 'tree-table' }
     }
   ]
 }

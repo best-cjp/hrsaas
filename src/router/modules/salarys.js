@@ -11,7 +11,7 @@ export default {
       path: '',
       component: () => import('@/views/salarys'),
       //左侧导航读取了这里的title信息
-      meta: { title: '工资' }
+      meta: { title: '工资', icon: 'money' }
     }
   ]
 }
