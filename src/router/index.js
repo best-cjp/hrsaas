@@ -31,7 +31,7 @@ export const constantRoutes = [
   },
 
   {
-    path: '/',
+    path: '/dashboard',
     component: Layout,
     redirect: '/dashboard',
     children: [
@@ -50,14 +50,14 @@ export const constantRoutes = [
 
 // 定义一个动态路由变量
 export const asyncRouter = [
-  approvalsRouter,
   departmentsRouter,
   employeesRouter,
   permissionRouter,
   attendancesRouter,
   salarysRouter,
   settingRouter,
-  socialRouter
+  socialRouter,
+  approvalsRouter
 ]
 
 const createRouter = () =>
