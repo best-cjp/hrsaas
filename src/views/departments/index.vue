@@ -7,7 +7,7 @@
         <tree-tools :tree-node="company" :isRoot="true" />
         <!-- 放置一个<el-rtee></el-rtee> -->
         <el-tree
-          :data="data"
+          :data="departs"
           :props="defaultProps"
           :default-expand-all="true"
           @node-click="handleNodeClick"
@@ -22,6 +22,7 @@
 
 <script>
 import TreeTools from './components/tree-tools'
+import { getDepartments } from '@/api/departments'
 
 export default {
   components: {
@@ -29,36 +30,24 @@ export default {
   },
   data() {
     return {
-      company: { label: '江苏传智播客教育科技股份有限公司', manager: '负责人' },
-      data: [
-        {
-          label: '总裁办',
-          manager: '曹操',
-          children: [
-            {
-              label: '董事会',
-              manager: '曹丕'
-            }
-          ]
-        },
-        {
-          label: '行政部',
-          manager: '刘备'
-        },
-        {
-          label: '人事部',
-          manager: '孙权'
-        }
-      ],
+      company: {},
+      departs: [],
       defaultProps: {
         children: 'children',
-        label: 'label'
+        label: 'name'
       }
     }
   },
+  created() {
+    this.getDepartments()
+  },
   methods: {
-    handleNodeClick(data) {
-      console.log(data)
+    handleNodeClick() {},
+    async getDepartments() {
+      const result = await getDepartments()
+      this.company = { name: result.companyName, manager: '负责人' }
+      this.departs = result.depts
+      console.log(result)
     }
   }
 }

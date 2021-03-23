@@ -7,7 +7,7 @@
   >
     <!-- 左侧内容 -->
     <el-col>
-      <span>{{ treeNode.label }}</span>
+      <span>{{ treeNode.name }}</span>
     </el-col>
 
     <!-- 右侧内容 -->
