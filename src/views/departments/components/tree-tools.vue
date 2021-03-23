@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { delDepartment } from '@/api/departments'
+
 export default {
   name: '',
   // 英 [kəm'pəʊnənts]  美 [kəm'ponənts]
@@ -76,7 +78,15 @@ export default {
         // 编辑部门
       } else {
         // 删除部门
-        alert(1)
+        this.$confirm('您确定要删除该组织部门吗？')
+          .then(() => {
+            return delDepartment(this.treeNode.id)
+          })
+          .then(() => {
+            // 只需要等到成功的时候，调用接口删除
+            this.$emit('delDepts') // 触发自定义事件
+            this.$message.success('删除部门成功')
+          })
       }
     }
   }

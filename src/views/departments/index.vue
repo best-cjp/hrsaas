@@ -13,7 +13,11 @@
           @node-click="handleNodeClick"
         >
           <!-- 传入插槽内容 -->
-          <tree-tools slot-scope="{ data }" :tree-node="data" />
+          <tree-tools
+            slot-scope="{ data }"
+            :tree-node="data"
+            @delDepts="getDepartments"
+          />
         </el-tree>
       </el-card>
     </div>
