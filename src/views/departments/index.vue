@@ -10,7 +10,7 @@
           :data="departs"
           :props="defaultProps"
           :default-expand-all="true"
-          @node-click="handleNodeClick"
+
         >
           <!-- 传入插槽内容 -->
           <tree-tools
@@ -25,9 +25,10 @@
 
     <!-- 放置新增弹层组件 -->
     <add-dept
-      :show-dialog="showDialog"
+      changeshowDialog="test"
+      :show-dialog.sync="showDialog"
       :tree-node="node"
-      @addDept="getDepartments"
+      @addDepts="getDepartments"
     ></add-dept>
   </div>
 </template>
@@ -61,7 +62,6 @@ export default {
     this.getDepartments()
   },
   methods: {
-    handleNodeClick() {},
     async getDepartments() {
       const result = await getDepartments()
       this.company = { name: result.companyName, manager: '负责人', id: '' }
@@ -73,6 +73,9 @@ export default {
     addDepts(node) {
       this.showDialog = true
       this.node = node
+    },
+    test(value) {
+      this.showDialog = value
     }
   }
 }

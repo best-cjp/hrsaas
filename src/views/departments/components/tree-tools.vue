@@ -79,7 +79,7 @@ export default {
         // 编辑部门
       } else {
         // 删除部门
-        this.$confirm('您确定要删除该组织部门吗？')
+        this.$confirm('确定要删除该部门吗？')
           .then(() => {
             return delDepartment(this.treeNode.id)
           })

@@ -1,6 +1,6 @@
 <template>
   <!-- 新增部门的弹层 -->
-  <el-dialog title="新增部门" :visible="showDialog">
+  <el-dialog title="新增部门" :visible="showDialog" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form
@@ -53,7 +53,7 @@
       <!-- 列被分为24 -->
       <el-col :span="6">
         <el-button type="primary" size="small" @click="btnOK">确定</el-button>
-        <el-button size="small" @click="showDialog = false">取消</el-button>
+        <el-button size="small" @click="btnCancel">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
@@ -170,9 +170,17 @@ export default {
         if (isOK) {
           // 表示可以提交了
           await addDepartments({ ...this.formData, pid: this.treeNode.id }) // 调用新增接口 添加父部门的id
-          this.$emit('addDept') // 触发自定义事件
+          this.$emit('addDepts') // 触发自定义事件
+          // 此时应该去修改showDialog的值
+          this.$emit('update:showDialog', false)
         }
       })
+    },
+    btnCancel() {
+      // 关闭弹层
+      this.$emit('update:showDialog', false)
+      // 清除之前的表单验证
+      this.$refs.deptForm.resetFields()
     }
   }
 }

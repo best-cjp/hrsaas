@@ -10,8 +10,8 @@ export function getDepartments() {
 //根据id删除组织架构的部门
 export function delDepartment(id) {
   return request({
-    url: '/company/department/{id}',
-    method: 'delete'
+    url: `/company/department/${id}`,
+    method: 'DELETE'
   })
 }
 
