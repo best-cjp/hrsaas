@@ -74,6 +74,7 @@ export default {
     operateDepts(type) {
       if (type === 'add') {
         //添加子部门
+        this.$emit('addDepts', this.treeNode) //触发自定义事件，通知父组件显示弹层
       } else if (type === 'edit') {
         // 编辑部门
       } else {

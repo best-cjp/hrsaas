@@ -14,3 +14,12 @@ export function delDepartment(id) {
     method: 'delete'
   })
 }
+
+// 新增部门
+export function addDepartments(data) {
+  return request({
+    url: '/company/department',
+    method: 'POST',
+    data //axios的boby参数data
+  })
+}

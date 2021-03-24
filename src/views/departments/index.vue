@@ -4,7 +4,7 @@
       <!-- 组织架构内容-头部 -->
       <el-card class="tree-card">
         <!-- 结构内容 -->
-        <tree-tools :tree-node="company" :isRoot="true" />
+        <tree-tools :tree-node="company" :isRoot="true" @addDepts="addDepts" />
         <!-- 放置一个<el-rtee></el-rtee> -->
         <el-tree
           :data="departs"
@@ -17,10 +17,14 @@
             slot-scope="{ data }"
             :tree-node="data"
             @delDepts="getDepartments"
+            @addDepts="addDepts"
           />
         </el-tree>
       </el-card>
     </div>
+
+    <!-- 放置新增弹层组件 -->
+    <add-dept :show-dialog="showDialog"></add-dept>
   </div>
 </template>
 
@@ -28,10 +32,12 @@
 import TreeTools from './components/tree-tools'
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils'
+import AddDept from './components/add-dept.vue'
 
 export default {
   components: {
-    TreeTools
+    TreeTools,
+    AddDept
   },
   data() {
     return {
@@ -40,7 +46,9 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'name'
-      }
+      },
+      showDialog: false, // 不显示弹层
+      node: null //记录当前node节点
     }
   },
   created() {
@@ -53,6 +61,11 @@ export default {
       this.company = { name: result.companyName, manager: '负责人' }
       this.departs = tranListToTreeData(result.depts, '') //需要转化成树形结构
       // console.log(result)
+    },
+    // 监听tree-tools中点击添加子部门的事件
+    addDepts(node) {
+      this.showDialog = true
+      this.node = node
     }
   }
 }
