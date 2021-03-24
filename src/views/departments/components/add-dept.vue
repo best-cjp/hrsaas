@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { getDepartments } from '@/api/departments'
+
 export default {
   name: '',
   // 英 [kəm'pəʊnənts]  美 [kəm'ponənts]
@@ -56,12 +58,42 @@ export default {
     showDialog: {
       type: Boolean,
       default: false
+    },
+    // 当前操作的节点
+    treeNode: {
+      type: Object,
+      default: null
     }
   },
   data() {
+    // 检查部门名称是否重复
+    const checkNameRepeat = async (rule, value, callback) => {
+      // value 是部门名称，即 name
+      // 要和同级部门的 name 去比较，不能有重复的
+      const { depts } = await getDepartments()
+      // 筛选当前点击项的所有子部门
+      const isRepeat = depts
+        .filter(item => item.pid === this.treeNode.id)
+        .some(item => item.name === value)
+      isRepeat
+        ? callback(new Error(`同级部门下已经存在${value}这个部门了`))
+        : callback()
+    }
+
+    // 检查编码重复
+    const checkCodeRepeat = async (rule, value, callback) => {
+      // 先要获取最新的组织架构数据
+      const { depts } = await getDepartments()
+      // 并且 value 存在，不为空
+      const isRepeat = depts.some(item => item.code === value && value)
+      isRepeat
+        ? callback(new Error(`组织架构中已经有部门使用${value}编码`))
+        : callback()
+    }
+
     return {
-       // 定义表单数据
-       formData: {
+      // 定义表单数据
+      formData: {
         name: '', // 部门名称
         code: '', // 部门编码
         manager: '', // 部门管理者
@@ -69,13 +101,39 @@ export default {
       },
       // 定义校验规则
       rules: {
-        name: [{ required: true, message: '部门名称不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门名称要求1-50个字符', trigger: 'blur' }],
-        code: [{ required: true, message: '部门编码不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门编码要求1-50个字符', trigger: 'blur' }],
-        manager: [{ required: true, message: '部门负责人不能为空', trigger: 'blur' }],
-        introduce: [{ required: true, message: '部门介绍不能为空', trigger: 'blur' },
-          { trigger: 'blur', min: 1, max: 300, message: '部门介绍要求1-50个字符' }]
+        name: [
+          { required: true, message: '部门名称不能为空', trigger: 'blur' },
+          {
+            min: 1,
+            max: 50,
+            message: '部门名称要求1-50个字符',
+            trigger: 'blur'
+          },
+          { validator: checkNameRepeat, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '部门编码不能为空', trigger: 'blur' },
+          {
+            min: 1,
+            max: 50,
+            message: '部门编码要求1-50个字符',
+            trigger: 'blur'
+          },
+          { validator: checkCodeRepeat, trigger: 'blur' }
+        ],
+        manager: [
+          { required: true, message: '部门负责人不能为空', trigger: 'blur' }
+        ],
+        introduce: [
+          { required: true, message: '部门介绍不能为空', trigger: 'blur' },
+          {
+            trigger: 'blur',
+            min: 1,
+            max: 300,
+            message: '部门介绍要求1-50个字符'
+          }
+        ]
+      }
     }
   },
   // 计算

@@ -24,7 +24,7 @@
     </div>
 
     <!-- 放置新增弹层组件 -->
-    <add-dept :show-dialog="showDialog"></add-dept>
+    <add-dept :show-dialog="showDialog" :tree-node="node"></add-dept>
   </div>
 </template>
 
@@ -47,8 +47,10 @@ export default {
         children: 'children',
         label: 'name'
       },
-      showDialog: false, // 不显示弹层
-      node: null //记录当前node节点
+      // 不显示弹层
+      showDialog: false,
+      // 记录当前node节点
+      node: null
     }
   },
   created() {
@@ -59,8 +61,9 @@ export default {
     async getDepartments() {
       const result = await getDepartments()
       this.company = { name: result.companyName, manager: '负责人' }
-      this.departs = tranListToTreeData(result.depts, '') //需要转化成树形结构
-      // console.log(result)
+      // 需要转化成树形结构
+      this.departs = tranListToTreeData(result.depts, '')
+      console.log(result)
     },
     // 监听tree-tools中点击添加子部门的事件
     addDepts(node) {
