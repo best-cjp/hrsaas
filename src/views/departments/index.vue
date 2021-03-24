@@ -24,7 +24,11 @@
     </div>
 
     <!-- 放置新增弹层组件 -->
-    <add-dept :show-dialog="showDialog" :tree-node="node"></add-dept>
+    <add-dept
+      :show-dialog="showDialog"
+      :tree-node="node"
+      @addDept="getDepartments"
+    ></add-dept>
   </div>
 </template>
 
