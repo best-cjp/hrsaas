@@ -7,7 +7,11 @@
           <el-tab-pane label="角色管理">
             <!-- 新增角色按钮 -->
             <el-row style="height:60px">
-              <el-button icon="el-icon-plus" size="small" type="primary"
+              <el-button
+                icon="el-icon-plus"
+                size="small"
+                type="primary"
+                @click="showDialog = true"
                 >新增角色</el-button
               >
             </el-row>
@@ -140,7 +144,8 @@ import {
   getCompanyInfo,
   deleteRole,
   getRoleDetail,
-  updateRole
+  updateRole,
+  addRole
 } from '@/api/setting'
 
 import { mapGetters } from 'vuex'
@@ -218,15 +223,16 @@ export default {
     },
     async btnOK() {
       try {
+        await this.$refs.roleForm.validate()
         if (this.roleForm.id) {
           // 有id就是编辑
-          await this.$refs.roleForm.validate()
+          await updateRole(this.roleForm)
         } else {
           // 新增业务
+          await addRole(this.roleForm)
         }
         // 校验通过才会执行await的下方内容
-        await updateRole(this.roleForm)
-        this.getRoleList()
+        this.getRoleList() // 重新拉取数据
         this.showDialog = false
         this.$message.success('新增角色成功')
       } catch (error) {
@@ -234,6 +240,12 @@ export default {
       }
     },
     btnCancel() {
+      this.roleForm = {
+        name: '',
+        description: ''
+      }
+      // 移除校验组件
+      this.$refs.roleForm.resetFields()
       this.showDialog = false
     }
   }
