@@ -1,6 +1,6 @@
 <template>
   <!-- 新增部门的弹层 -->
-  <el-dialog title="新增部门" :visible="showDialog" @close="btnCancel">
+  <el-dialog :title="showTitle" :visible="showDialog" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form
@@ -156,7 +156,11 @@ export default {
     }
   },
   // 计算
-  computed: {},
+  computed: {
+    showTitle() {
+      return this.formData.id ? '编辑部门' : '新增部门'
+    }
+  },
   // 监听
   watch: {},
   // 实例创建后
@@ -181,6 +185,12 @@ export default {
       })
     },
     btnCancel() {
+      this.formData = {
+        name: '',
+        code: '',
+        manager: '',
+        introduce: ''
+      }
       // 关闭弹层
       this.$emit('update:showDialog', false)
       // 清除之前的表单验证
