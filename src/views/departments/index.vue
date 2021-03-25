@@ -10,7 +10,6 @@
           :data="departs"
           :props="defaultProps"
           :default-expand-all="true"
-
         >
           <!-- 传入插槽内容 -->
           <tree-tools
@@ -18,6 +17,7 @@
             :tree-node="data"
             @delDepts="getDepartments"
             @addDepts="addDepts"
+            @editDepts="editDepts"
           />
         </el-tree>
       </el-card>
@@ -25,6 +25,7 @@
 
     <!-- 放置新增弹层组件 -->
     <add-dept
+      ref="addDept"
       changeshowDialog="test"
       :show-dialog.sync="showDialog"
       :tree-node="node"
@@ -70,12 +71,21 @@ export default {
       // console.log(result)
     },
     // 监听tree-tools中点击添加子部门的事件
+    // 增
     addDepts(node) {
       this.showDialog = true
       this.node = node
     },
     test(value) {
       this.showDialog = value
+    },
+    // 改
+    editDepts(node) {
+      this.showDialog = true
+      this.node = node
+      // 我们需要在这个位置 调用子组件的方法
+      // 父组件 调用子组件的方法
+      this.$refs.addDept.getDepartDetail(node.id)
     }
   }
 }

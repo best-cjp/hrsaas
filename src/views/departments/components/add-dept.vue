@@ -60,7 +60,11 @@
 </template>
 
 <script>
-import { getDepartments, addDepartments } from '@/api/departments'
+import {
+  getDepartments,
+  addDepartments,
+  getDepartDetail
+} from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 
 export default {
@@ -181,6 +185,12 @@ export default {
       this.$emit('update:showDialog', false)
       // 清除之前的表单验证
       this.$refs.deptForm.resetFields()
+    },
+    // 获取详情方法、
+    async getDepartDetail(id) {
+      this.formData = await getDepartDetail(id)
+      // 因为是父调用子组件方法，先设置了node数据，直接调用方法
+      // props传值是异步的
     }
   }
 }

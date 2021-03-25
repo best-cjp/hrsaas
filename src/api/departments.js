@@ -23,3 +23,11 @@ export function addDepartments(data) {
     data //axios的boby参数data
   })
 }
+
+// 获取部门信息的模块
+export function getDepartDetail(id) {
+  return request({
+    url: `/company/department/${id}`
+    // method: 'GET'
+  })
+}

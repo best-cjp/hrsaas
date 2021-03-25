@@ -23,8 +23,8 @@
             <!-- 下拉插槽 -->
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="add">添加子部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot" command="edit"
-                >编辑子部门</el-dropdown-item
+              <el-dropdown-item v-if="!isRoot" command="edit">
+                编辑子部门</el-dropdown-item
               >
               <el-dropdown-item v-if="!isRoot" command="del"
                 >删除子部门</el-dropdown-item
@@ -77,6 +77,7 @@ export default {
         this.$emit('addDepts', this.treeNode) //触发自定义事件，通知父组件显示弹层
       } else if (type === 'edit') {
         // 编辑部门
+        this.$emit('editDepts', this.treeNode)
       } else {
         // 删除部门
         this.$confirm('确定要删除该部门吗？')
