@@ -63,7 +63,8 @@
 import {
   getDepartments,
   addDepartments,
-  getDepartDetail
+  getDepartDetail,
+  updateDepartments
 } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 
@@ -85,7 +86,7 @@ export default {
   },
   data() {
     // 检查部门名称是否重复
-    const checkNameRepeat = async (rule, value, callback) => {
+    const checkNameRepeat = async(rule, value, callback) => {
       // value 是部门名称，即 name
       // 要和同级部门的 name 去比较，不能有重复的
       const { depts } = await getDepartments()
@@ -99,7 +100,7 @@ export default {
     }
 
     // 检查编码重复
-    const checkCodeRepeat = async (rule, value, callback) => {
+    const checkCodeRepeat = async(rule, value, callback) => {
       // 先要获取最新的组织架构数据
       const { depts } = await getDepartments()
       // 并且 value 存在，不为空
@@ -176,8 +177,16 @@ export default {
     btnOK() {
       this.$refs.deptForm.validate(async isOK => {
         if (isOK) {
-          // 表示可以提交了
-          await addDepartments({ ...this.formData, pid: this.treeNode.id }) // 调用新增接口 添加父部门的id
+          // 要分清楚现在是编辑还是新增
+          if (this.formData.id) {
+            // 编辑模式  调用编辑接口
+            await updateDepartments(this.formData)
+          } else {
+            // 新增模式
+            await addDepartments({ ...this.formData, pid: this.treeNode.id })
+            // 调用新增接口 添加父部门的id
+          }
+          // 调用新增接口 添加父部门的id
           this.$emit('addDepts') // 触发自定义事件
           // 此时应该去修改showDialog的值
           this.$emit('update:showDialog', false)
