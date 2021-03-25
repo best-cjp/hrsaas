@@ -86,25 +86,51 @@ export default {
   },
   data() {
     // 检查部门名称是否重复
-    const checkNameRepeat = async(rule, value, callback) => {
-      // value 是部门名称，即 name
-      // 要和同级部门的 name 去比较，不能有重复的
+    // 现在定义一个函数 这个函数的目的是 去找 同级部门下 是否有重复的部门名称
+    const checkNameRepeat = async (rule, value, callback) => {
+      // 先要获取最新的组织架构数据
       const { depts } = await getDepartments()
-      // 筛选当前点击项的所有子部门
-      const isRepeat = depts
-        .filter(item => item.pid === this.treeNode.id)
-        .some(item => item.name === value)
+      //  检查重复规则 需要支持两种 新增模式 / 编辑模式
+      // depts是所有的部门数据
+      // 如何去找技术部所有的子节点
+      let isRepeat = false
+      if (this.formData.id) {
+        // 有id就是编辑模式
+        // 编辑 张三 => 校验规则 除了我之外 同级部门下 不能有叫张三的
+        isRepeat = depts
+          .filter(
+            item =>
+              item.id !== this.formData.id && item.pid === this.treeNode.pid
+          )
+          .some(item => item.name === value)
+      } else {
+        // 没id就是新增模式
+        isRepeat = depts
+          .filter(item => item.pid === this.treeNode.id)
+          .some(item => item.name === value)
+      }
+
       isRepeat
-        ? callback(new Error(`同级部门下已经存在${value}这个部门了`))
+        ? callback(new Error(`同级部门下已经有${value}的部门了`))
         : callback()
     }
 
     // 检查编码重复
-    const checkCodeRepeat = async(rule, value, callback) => {
+    const checkCodeRepeat = async (rule, value, callback) => {
       // 先要获取最新的组织架构数据
+      //  检查重复规则 需要支持两种 新增模式 / 编辑模式
       const { depts } = await getDepartments()
-      // 并且 value 存在，不为空
-      const isRepeat = depts.some(item => item.code === value && value)
+      let isRepeat = false
+      if (this.formData.id) {
+        // 编辑模式  因为编辑模式下 不能算自己
+        isRepeat = depts.some(
+          item => item.id !== this.formData.id && item.code === value && value
+        )
+      } else {
+        // 新增模式
+        isRepeat = depts.some(item => item.code === value && value) // 这里加一个 value不为空 因为我们的部门有可能没有code
+      }
+
       isRepeat
         ? callback(new Error(`组织架构中已经有部门使用${value}编码`))
         : callback()
