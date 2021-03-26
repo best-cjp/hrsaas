@@ -2,7 +2,7 @@
 import layout from '@/layout'
 
 export default {
-  path: '/employees', //路由地址
+  path: '/', //路由地址
   component: layout, // 组件  //给路由规则加一个name
   name: 'employees',
   // 配置二级的路由表
