@@ -6,7 +6,9 @@
         <template slot="after">
           <el-button size="small" type="warning">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
-          <el-button size="small" type="primary">新增员工</el-button>
+          <el-button size="small" type="primary" @click="showAddEmp = true"
+            >新增员工</el-button
+          >
         </template>
       </page-tools>
       <!-- 放置表格和分页 -->
@@ -65,22 +67,26 @@
         </el-row>
       </el-card>
     </div>
+    <!-- 放置新增弹层 -->
+    <add-employee :show-add-emp.sync="showAddEmp" />
   </div>
 </template>
 
 <script>
 import { getEmployeesList, delEmployeesUser } from '@/api/employees'
 import EmployeesEnum from '@/api/constant/employees' // 引入员工的枚举对象
+import AddEmployee from './components/add-employee.vue'
 
 export default {
   name: '',
   // 英 [kəm'pəʊnənts]  美 [kəm'ponənts]
   // n. 部件；组件；成份（component复数）
-  components: {},
+  components: { AddEmployee },
   props: {},
   data() {
     return {
       loading: false,
+      showAddEmp: false,
       list: [],
       page: {
         page: 1,
@@ -107,7 +113,6 @@ export default {
       const { total, rows } = await getEmployeesList(this.page)
       this.page.total = total
       this.list = rows
-      console.log(rows)
       this.loading = false
     },
     // 获取最新页面数据
@@ -131,6 +136,8 @@ export default {
         this.$message.error('删除员工失败')
       }
     }
+    // 增
+    // addEmployees() {}
   }
 }
 </script>
