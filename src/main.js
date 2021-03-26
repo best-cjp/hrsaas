@@ -15,6 +15,8 @@ import router from './router'
 // 引入PageTools全局组件
 import Component from '@/components/index'
 
+import * as filters from '@/filters' // 引入过滤器
+
 import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
@@ -40,6 +42,11 @@ Vue.use(ElementUI, { locale })
 // 遍历directives，Object.keys()是一种遍历数组，对象，数字，字符串的方法，遍历出来的都是key值
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key]) // 注册自定义指令
+})
+
+// 注册全局的过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key]) // 注册自定义过滤器
 })
 
 Vue.config.productionTip = false
