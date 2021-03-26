@@ -35,13 +35,16 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
-            <template>
+            <!-- <template slot-scope="{{row}}"> -->
+            <template v-slot="{ row }">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="delEmployee(row.id)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -66,7 +69,7 @@
 </template>
 
 <script>
-import { getEmployeesList } from '@/api/employees'
+import { getEmployeesList, delEmployeesUser } from '@/api/employees'
 import EmployeesEnum from '@/api/constant/employees' // 引入员工的枚举对象
 
 export default {
@@ -116,6 +119,17 @@ export default {
     formatterEmployees(row, column, cellValue, index) {
       const obj = EmployeesEnum.hireType.find(item => item.id === cellValue)
       return obj ? obj.value : '未知'
+    },
+    // 删
+    async delEmployee(id) {
+      try {
+        await this.$confirm('确定删除员工？')
+        await delEmployeesUser(id)
+        this.$message.success('删除员工成功')
+        this.getEmployeesList()
+      } catch (error) {
+        this.$message.error('删除员工失败')
+      }
     }
   }
 }
