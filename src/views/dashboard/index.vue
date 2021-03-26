@@ -3,7 +3,7 @@
     <div class="dashboard-text">name: {{ name }}</div>
     <page-tools :show-before="true">
       <template v-slot:before>
-        <span >我想你们</span>
+        <span>我想你们</span>
       </template>
 
       <template v-slot:after>
@@ -15,11 +15,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import PageTools from '@/components/PageTools'
 
 export default {
   name: 'Dashboard',
-  components: { PageTools },
+  components: {},
   props: {},
   data() {
     return {}

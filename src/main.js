@@ -12,6 +12,9 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+// 引入PageTools全局组件
+import Component from '@/components/index'
+
 import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
@@ -40,6 +43,9 @@ Object.keys(directives).forEach(key => {
 })
 
 Vue.config.productionTip = false
+
+// 注册全局组件
+Vue.use(Component)
 
 new Vue({
   el: '#app',
