@@ -83,6 +83,7 @@
 import { getEmployeesList, delEmployeesUser } from '@/api/employees'
 import EmployeesEnum from '@/api/constant/employees' // 引入员工的枚举对象
 import AddEmployee from './components/add-employee.vue'
+import { formatDate } from '@/filters'
 
 export default {
   name: '',
@@ -187,7 +188,22 @@ export default {
       // })
       // return result
       return rows.map(item =>
-        Object.keys(headers).map(key => item[headers[key]])
+        Object.keys(headers).map(key => {
+          // 需要判断 字段
+          if (
+            headers[key] === 'timeOfEntry' ||
+            headers[key] === 'correctionTime'
+          ) {
+            // 格式化日期
+            return formatDate(item[headers[key]])
+          } else if (headers[key] === 'formOfEmployment') {
+            const obj = EmployeesEnum.hireType.find(
+              obj => obj.id === item[headers[key]]
+            )
+            return obj ? obj.value : '未知'
+          }
+          return item[headers[key]]
+        })
       )
     }
   }
