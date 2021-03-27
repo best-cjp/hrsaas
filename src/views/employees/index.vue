@@ -144,17 +144,51 @@ export default {
       }
     },
     exportData() {
+      const headers = {
+        手机号: 'mobile',
+        姓名: 'username',
+        入职日期: 'timeOfEntry',
+        聘用形式: 'formOfEmployment',
+        转正日期: 'correctionTime',
+        工号: 'workNumber',
+        部门: 'departmentName'
+      }
       // d导出Excel
-      import('@/vendor/Export2Excel').then(excel => {
+      import('@/vendor/Export2Excel').then(async excel => {
+        // excel.export_json_to_excel({
+        //   header: ['姓名', '工资'],
+        //   data: [
+        //     ['张三', 3000],
+        //     ['李四', 5000]
+        //   ],
+        //   filename: '员工工资表'
+        // })
+        const { rows } = await getEmployeesList({
+          page: 1,
+          size: this.page.total
+        })
+        const data = this.formatJson(headers, rows)
         excel.export_json_to_excel({
-          header: ['姓名', '工资'],
-          data: [
-            ['张三', 3000],
-            ['李四', 5000]
-          ],
-          filename: '员工工资表'
+          header: Object.keys(headers),
+          data
         })
       })
+    },
+    // 将表头数据进行接应
+    formatJson(headers, rows) {
+      // return rows.map(item => {
+      //   // item是一个对象
+      //   return Object.keys(headers).map(key => {
+      //     // headers[key] 中文
+      //     return item[headers[key]]
+      //     // return test
+      //   })
+      //   // return obj
+      // })
+      // return result
+      return rows.map(item =>
+        Object.keys(headers).map(key => item[headers[key]])
+      )
     }
   }
 }
