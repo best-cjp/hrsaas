@@ -10,7 +10,9 @@
             @click="$router.push('/import')"
             >Excel导入</el-button
           >
-          <el-button size="small" type="danger">Excel导出</el-button>
+          <el-button size="small" type="danger" @click="exportData"
+            >Excel导出</el-button
+          >
           <el-button size="small" type="primary" @click="showAddEmp = true"
             >新增员工</el-button
           >
@@ -140,9 +142,20 @@ export default {
       } catch (error) {
         this.$message.error('删除员工失败')
       }
+    },
+    exportData() {
+      // d导出Excel
+      import('@/vendor/Export2Excel').then(excel => {
+        excel.export_json_to_excel({
+          header: ['姓名', '工资'],
+          data: [
+            ['张三', 3000],
+            ['李四', 5000]
+          ],
+          filename: '员工工资表'
+        })
+      })
     }
-    // 增
-    // addEmployees() {}
   }
 }
 </script>
