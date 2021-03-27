@@ -1,6 +1,11 @@
 <template>
-  <el-dialog title="新增员工" :visible.sync="showAddEmp">
-    <el-form :model="formData" :rules="rules" label-width="120px">
+  <el-dialog title="新增员工" :visible.sync="showAddEmp" @close="btnCancel">
+    <el-form
+      ref="addEmployee"
+      :model="formData"
+      :rules="rules"
+      label-width="120px"
+    >
       <el-form-item label="姓名" prop="username">
         <el-input
           v-model="formData.username"
@@ -57,11 +62,11 @@
           :data="treeData"
           :props="{ label: 'name' }"
           :default-expand-all="true"
-        ></el-tree>
+          @node-click="selectNode"
+        />
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker
-          @not-click="selectNode"
           v-model="formData.correctionTime"
           style="width:50%"
           placeholder="请选择转正时间"
@@ -70,8 +75,8 @@
     </el-form>
 
     <div slot="footer" class="dialog-footer" justify="center">
-      <el-button @click="showAddEmp = false">取 消</el-button>
-      <el-button type="primary">确 定</el-button>
+      <el-button @click="btnCancel">取 消</el-button>
+      <el-button type="primary" @click="btnOK">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -80,6 +85,7 @@
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils/index'
 import EmployeesEnum from '@/api/constant/employees'
+import addEmployeesUser from '@/api/employees'
 
 export default {
   name: '',
@@ -142,6 +148,7 @@ export default {
       showTree: false, // 默认tree隐藏
       loading: false, // 进度条默认隐藏
       EmployeesEnum: EmployeesEnum
+      // showAddEmp: this.showAddEmp  
     }
   },
   // 计算
@@ -162,9 +169,40 @@ export default {
       this.treeData = tranListToTreeData(depts, '')
       this.loading = false
     },
+    // 点击部门赋值
     selectNode(node) {
       this.formData.departmentName = node.name
       this.showTree = false
+    },
+    async btnOK() {
+      try {
+        // 校验整个表单
+        await this.$refs.addEmployee.validate()
+        // 调用新增
+        await addEmployeesUser(this.formData)
+        // 重新渲染页面
+        this.$parent.getDepartments && this.$parent.getDepartments()
+        // 关闭弹层
+        // this.$parent.showAddEmp = false
+        this.$emit('update:showAddEmp', false)
+      } catch (error) {
+        this.$message.error('新增员工失败')
+      }
+    },
+    btnCancel() {
+      // 重置原来的数据
+      this.formData = {
+        username: '',
+        mobile: '',
+        formOfEmployment: '',
+        workNumber: '',
+        departmentName: '',
+        timeOfEntry: '',
+        correctionTime: ''
+      }
+      // 重置校验结果
+      this.$refs.addEmployee.resetFields()
+      this.$emit('update:showAddEmp', false)
     }
   }
 }
