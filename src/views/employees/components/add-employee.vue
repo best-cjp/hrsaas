@@ -27,7 +27,14 @@
           v-model="formData.formOfEmployment"
           style="width:50%"
           placeholder="请选择"
-        />
+        >
+          <el-option
+            v-for="item in EmployeesEnum.hireType"
+            :key="item.id"
+            :label="item.value"
+            :value="item.id"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="工号" prop="workNumber">
         <el-input
@@ -54,6 +61,7 @@
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker
+          @not-click="selectNode"
           v-model="formData.correctionTime"
           style="width:50%"
           placeholder="请选择转正时间"
@@ -71,6 +79,7 @@
 <script>
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils/index'
+import EmployeesEnum from '@/api/constant/employees'
 
 export default {
   name: '',
@@ -131,7 +140,8 @@ export default {
       },
       treeData: [], // 接收树形结构
       showTree: false, // 默认tree隐藏
-      loading: false // 进度条默认隐藏
+      loading: false, // 进度条默认隐藏
+      EmployeesEnum: EmployeesEnum
     }
   },
   // 计算
@@ -151,6 +161,10 @@ export default {
       // depts是一个数组，要转化成树形结构,才可以被el-tree显示
       this.treeData = tranListToTreeData(depts, '')
       this.loading = false
+    },
+    selectNode(node) {
+      this.formData.departmentName = node.name
+      this.showTree = false
     }
   }
 }
