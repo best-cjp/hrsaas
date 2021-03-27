@@ -31,3 +31,12 @@ export function addEmployeesUser(data) {
     data
   })
 }
+
+// 导入员工数据
+export function importEmployee(data) {
+  return request({
+    url: '/sys/user/batch',
+    method: 'POST',
+    data
+  })
+}
