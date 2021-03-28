@@ -1,8 +1,18 @@
 <template>
-  <el-upload list-type="picture-card">
-    <i class="el-icon-plus" />
-    
-  </el-upload>
+  <div>
+    <el-upload
+      list-type="picture-card"
+      :limit="1"
+      action="#"
+      :on-preview="preview"
+      :file-list="fileList"
+    >
+    </el-upload>
+    <!-- 预览弹层 -->
+    <el-dialog title="图片预览" :visible.sync="showDialog">
+      <img :src="imgUrl" style="width:100%" alt="" />
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -13,7 +23,11 @@ export default {
   components: {},
   props: {},
   data() {
-    return {}
+    return {
+      fileList: [], // 图片地址设置为数组
+      showDialog: false, // 控制显示弹层
+      imgUrl: ''
+    }
   },
   // 计算
   computed: {},
@@ -24,7 +38,12 @@ export default {
   // 实例渲染后
   mounted() {},
   // 方法
-  methods: {}
+  methods: {
+    preview(file) {
+      this.imgUrl = file.url
+      this.showDialog = true
+    }
+  }
 }
 </script>
 
