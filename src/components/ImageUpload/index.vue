@@ -13,6 +13,14 @@
       :http-request="upload"
     >
     </el-upload>
+
+    <!-- 进度条 -->
+    <el-progress
+      v-if="showPercent"
+      style="width: 180px"
+      :percentage="percent"
+    />
+
     <!-- 预览弹层 -->
     <el-dialog title="图片预览" :visible.sync="showDialog">
       <img :src="imgUrl" style="width:100%" alt="" />
@@ -25,8 +33,8 @@ import COS from 'cos-js-sdk-v5'
 
 // 实例化COS对象
 const cos = new COS({
-  SecretId: AKIDqnZ8slLmZLBk9Iq8gyA7oHHfghT2CiPt,
-  SecretKey: Un2Poy0EPN71kDTdeWEuNLsDMtEQQufa
+  SecretId: 'AKIDqnZ8slLmZLBk9Iq8gyA7oHHfghT2CiPt',
+  SecretKey: 'Un2Poy0EPN71kDTdeWEuNLsDMtEQQufa'
 })
 
 export default {
@@ -40,7 +48,9 @@ export default {
       fileList: [], // 图片地址设置为数组
       showDialog: false, // 控制显示弹层
       imgUrl: '',
-      currentFileUid: null // 记录当前正在上传的
+      currentFileUid: null, // 记录当前正在上传的
+      percent: 0, // 进度条为0。当前进度
+      showPercent: false // 默认不显示进度条
     }
   },
   // 计算
@@ -90,7 +100,9 @@ export default {
         return false
       }
       // console.log(file)
+      // 已经确定当前上传的就是当前的这个file了
       this.currentFileUid = file.uid
+      this.showDialog = true
       return true
     },
     // 上传操作
@@ -102,7 +114,11 @@ export default {
             Region: 'ap-nanjing', // 地域
             Key: params.file.name, // 文件名
             Body: params.file, // 要上传的文件对象
-            StorageClass: 'STANDARD' // 上传的模式类型 直接默认 标准模式即可
+            StorageClass: 'STANDARD', // 上传的模式类型 直接默认 标准模式即可
+            onProgress: params => {
+              // console.log(params)
+              this.percent = params.percent * 100
+            }
           },
           (err, data) => {
             // data返回数据之后 应该如何处理
@@ -120,6 +136,11 @@ export default {
                 return item
               })
               // 将上传成功的地址 回写到了fileList中
+              // 关闭进度条，重置百分比
+              setTimeout(() => {
+                this.showDialog = false
+                this.percent = 0
+              }, 1000)
             }
           }
         )
