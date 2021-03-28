@@ -24,10 +24,10 @@ export function delEmployeesUser(id) {
 }
 
 // 新增员工接口
-export function addEmployeesUser(data) {
+export function addEmployee(data) {
   return request({
-    url: '/sys/user',
     method: 'POST',
+    url: '/sys/user',
     data
   })
 }

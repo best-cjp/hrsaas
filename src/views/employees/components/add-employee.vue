@@ -85,7 +85,7 @@
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils/index'
 import EmployeesEnum from '@/api/constant/employees'
-import addEmployeesUser from '@/api/employees'
+import { addEmployee } from '@/api/employees'
 
 export default {
   name: '',
@@ -148,7 +148,7 @@ export default {
       showTree: false, // 默认tree隐藏
       loading: false, // 进度条默认隐藏
       EmployeesEnum: EmployeesEnum
-      // showAddEmp: this.showAddEmp  
+      // showAddEmp: this.showAddEmp
     }
   },
   // 计算
@@ -179,9 +179,11 @@ export default {
         // 校验整个表单
         await this.$refs.addEmployee.validate()
         // 调用新增
-        await addEmployeesUser(this.formData)
+        // await addEmployee(this.formData)
+        await addEmployee(this.formData)
         // 重新渲染页面
-        this.$parent.getDepartments && this.$parent.getDepartments()
+        // this.$parent.getEmployeesList &&
+        this.$parent.getEmployeesList()
         // 关闭弹层
         // this.$parent.showAddEmp = false
         this.$emit('update:showAddEmp', false)
