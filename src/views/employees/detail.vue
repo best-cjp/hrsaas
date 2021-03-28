@@ -33,6 +33,8 @@
           <!-- <user-info /> -->
 
           <el-tab-pane label="岗位信息" />
+          <!-- 放置岗位详情 -->
+          <component :is="JobInfo" />
         </el-tabs>
       </el-card>
     </div>
@@ -43,16 +45,18 @@
 import { getUserDetailById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
 import UserInfo from './components/user-info.vue'
+import JobInfo from './components/job-info'
 
 export default {
   name: '',
   // 英 [kəm'pəʊnənts]  美 [kəm'ponənts]
   // n. 部件；组件；成份（component复数）
-  components: { UserInfo },
+  components: { UserInfo, JobInfo },
   props: {},
   data() {
     return {
       UserComponent: 'UserInfo',
+      JobInfo: JobInfo,
       userId: this.$route.params.id,
       userInfo: {
         //   专门存放基本信息
