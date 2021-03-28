@@ -28,6 +28,10 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="个人详情" />
+          <!-- 放置个人详情 -->
+          <component :is="UserComponent" />
+          <!-- <user-info /> -->
+
           <el-tab-pane label="岗位信息" />
         </el-tabs>
       </el-card>
@@ -38,15 +42,17 @@
 <script>
 import { getUserDetailById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
+import UserInfo from './components/user-info.vue'
 
 export default {
-  name: 'Detail',
+  name: '',
   // 英 [kəm'pəʊnənts]  美 [kəm'ponənts]
   // n. 部件；组件；成份（component复数）
-  components: {},
+  components: { UserInfo },
   props: {},
   data() {
     return {
+      UserComponent: 'UserInfo',
       userId: this.$route.params.id,
       userInfo: {
         //   专门存放基本信息
@@ -79,11 +85,14 @@ export default {
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
     },
-     saveUser() {
+    saveUser() {
       // 调用方法 校验
-      this.$refs.userForm.validate().then(async() => {
+      this.$refs.userForm.validate().then(async () => {
         // 调用保存借口
-        await saveUserDetailById({...this.userInfo,password:this.userInfo.password2})
+        await saveUserDetailById({
+          ...this.userInfo,
+          password: this.userInfo.password2
+        })
         this.$message.success('保存成功')
       })
     }
