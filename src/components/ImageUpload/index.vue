@@ -5,6 +5,8 @@
       :limit="1"
       action="#"
       :on-preview="preview"
+      :on-remove="handleRemove"
+      :on-change="changeFile"
       :file-list="fileList"
       :class="{ disabled: !fileComputed }"
     >
@@ -48,6 +50,18 @@ export default {
     preview(file) {
       this.imgUrl = file.url
       this.showDialog = true
+    },
+    // 删除方法
+    // file文件，fileList删除之后的文件
+    handleRemove(file, fileList) {
+      // this.fileList = fileList
+      // this.fileList = this.fileList.filter(item => item.id !== file.uid) // 将当前的删除文件排除在外
+      this.fileList = this.fileList.filter(item => item.uid !== file.uid)
+    },
+    // 增
+    changeFile(file, fileList) {
+      // file是当前文件，fileList是当前最新数组
+      this.fileList = fileList.map(item => item)
     }
   }
 }
