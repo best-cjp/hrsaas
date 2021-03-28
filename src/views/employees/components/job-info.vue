@@ -212,6 +212,7 @@
 
 <script>
 import EmployeeEnum from '@/api/constant/employees'
+import { getEmployeeSimple, updateJob, getJobDetail } from '@/api/employees'
 
 export default {
   name: '',
@@ -259,12 +260,26 @@ export default {
   // 监听
   watch: {},
   // 实例创建后
-  created() {},
+  created() {
+    this.getJobDetail()
+    this.getEmployeeSimple()
+  },
   // 实例渲染后
   mounted() {},
   // 方法
   methods: {
-    saveJob() {}
+    async getJobDetail() {
+      this.formData = await getJobDetail(this.userId)
+    },
+    // 获取员工列表
+    async getEmployeeSimple() {
+      this.depts = await getEmployeeSimple()
+    },
+    // 保存岗位信息
+    async saveJob() {
+      await updateJob(this.formData)
+      this.$message.success('保存岗位信息成功')
+    }
   }
 }
 </script>
