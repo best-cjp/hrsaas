@@ -27,14 +27,15 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="个人详情" />
-          <!-- 放置个人详情 -->
-          <component :is="UserComponent" />
-          <!-- <user-info /> -->
-
-          <el-tab-pane label="岗位信息" />
-          <!-- 放置岗位详情 -->
-          <component :is="JobInfo" />
+          <el-tab-pane label="个人详情">
+            <!-- 放置个人详情 -->
+            <component :is="UserComponent" />
+            <!-- <user-info /> -->
+          </el-tab-pane>
+          <el-tab-pane label="岗位信息">
+            <!-- 放置岗位详情 -->
+            <component :is="JobInfo" />
+          </el-tab-pane>
         </el-tabs>
       </el-card>
     </div>

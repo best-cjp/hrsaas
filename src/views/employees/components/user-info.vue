@@ -388,6 +388,12 @@
 
 <script>
 import EmployeeEnum from '@/api/constant/employees'
+import {
+  getPersonalDetail,
+  updatePersonal,
+  saveUserDetailById
+} from '@/api/employees'
+import { getUserDetailById } from '@/api/user'
 
 export default {
   name: 'UserInfo',
@@ -471,13 +477,31 @@ export default {
   // 监听
   watch: {},
   // 实例创建后
-  created() {},
+  created() {
+    this.getUserDetailById()
+    this.getPersonalDetail()
+  },
   // 实例渲染后
   mounted() {},
   // 方法
   methods: {
-    saveUser() {},
-    savePersonal() {}
+    // 获取用户基本信息
+    async getUserDetailById() {
+      this.userInfo = await getUserDetailById(this.userId)
+    },
+    // 获取用户详情
+    async getPersonalDetail() {
+      this.formData = await getPersonalDetail(this.userId)
+    },
+    async savePersonal() {
+      await updatePersonal({ ...this.formData, id: this.userId })
+      this.$message.success('保存成功')
+    },
+    async saveUser() {
+      //  调用父组件
+      await saveUserDetailById(this.userInfo)
+      this.$message.success('保存成功')
+    }
   }
 }
 </script>
