@@ -6,6 +6,7 @@
       action="#"
       :on-preview="preview"
       :file-list="fileList"
+      :class="{ disabled: !fileComputed }"
     >
     </el-upload>
     <!-- 预览弹层 -->
@@ -30,7 +31,12 @@ export default {
     }
   },
   // 计算
-  computed: {},
+  computed: {
+    // 如果为true表示不应该显示+号
+    fileComputed() {
+      return this.fileComputed === 1
+    }
+  },
   // 监听
   watch: {},
   // 实例创建后
@@ -47,4 +53,8 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.disabled .el-upload--picture-card {
+  display: none;
+}
+</style>
