@@ -39,7 +39,8 @@ export default {
     return {
       fileList: [], // 图片地址设置为数组
       showDialog: false, // 控制显示弹层
-      imgUrl: ''
+      imgUrl: '',
+      currentFileUid: null // 记录当前正在上传的
     }
   },
   // 计算
@@ -88,6 +89,8 @@ export default {
         this.$message.error('图片大小最大不能超过5M')
         return false
       }
+      // console.log(file)
+      this.currentFileUid = file.uid
       return true
     },
     // 上传操作
@@ -101,9 +104,23 @@ export default {
             Body: params.file, // 要上传的文件对象
             StorageClass: 'STANDARD' // 上传的模式类型 直接默认 标准模式即可
           },
-          function(err, data) {
+          (err, data) => {
             // data返回数据之后 应该如何处理
             console.log(err || data)
+            // data中有一个statusCode === 200 的时候说明上传成功
+            if (!err && data.statusCode === 200) {
+              //   此时说明文件上传成功  要获取成功的返回地址
+              this.fileList = this.fileList.map(item => {
+                // 去找谁的uid等于刚刚记录下来的id
+                if (item.uid === this.currentFileUid) {
+                  // 将成功的地址赋值给原来的url属性
+                  return { url: 'http://' + data.Location, upload: true }
+                  // upload 为true 表示这张图片已经上传完毕 这个属性要为我们后期应用的时候做标记
+                }
+                return item
+              })
+              // 将上传成功的地址 回写到了fileList中
+            }
           }
         )
       }
