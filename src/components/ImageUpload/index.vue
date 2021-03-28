@@ -10,6 +10,7 @@
       :before-upload="beforeUpload"
       :file-list="fileList"
       :class="{ disabled: !fileComputed }"
+      :http-request="upload"
     >
     </el-upload>
     <!-- 预览弹层 -->
@@ -20,6 +21,14 @@
 </template>
 
 <script>
+import COS from 'cos-js-sdk-v5'
+
+// 实例化COS对象
+const cos = new COS({
+  SecretId: AKIDqnZ8slLmZLBk9Iq8gyA7oHHfghT2CiPt,
+  SecretKey: Un2Poy0EPN71kDTdeWEuNLsDMtEQQufa
+})
+
 export default {
   name: '',
   // 英 [kəm'pəʊnənts]  美 [kəm'ponənts]
@@ -53,8 +62,8 @@ export default {
       this.showDialog = true
     },
     // 删除方法
-    // file文件，fileList删除之后的文件
     handleRemove(file, fileList) {
+      // file文件，fileList删除之后的文件
       // this.fileList = fileList
       // this.fileList = this.fileList.filter(item => item.id !== file.uid) // 将当前的删除文件排除在外
       this.fileList = this.fileList.filter(item => item.uid !== file.uid)
@@ -64,6 +73,7 @@ export default {
       // file是当前文件，fileList是当前最新数组
       this.fileList = fileList.map(item => item)
     },
+    // 控制上传的类型和大小
     beforeUpload(file) {
       // 要开始做文件上传的检查了
       // 文件类型 文件大小
@@ -79,6 +89,24 @@ export default {
         return false
       }
       return true
+    },
+    // 上传操作
+    upload(params) {
+      if (params.file) {
+        cos.putObject(
+          {
+            Bucket: 'best-1305406446', // 存储桶
+            Region: 'ap-nanjing', // 地域
+            Key: params.file.name, // 文件名
+            Body: params.file, // 要上传的文件对象
+            StorageClass: 'STANDARD' // 上传的模式类型 直接默认 标准模式即可
+          },
+          function(err, data) {
+            // data返回数据之后 应该如何处理
+            console.log(err || data)
+          }
+        )
+      }
     }
   }
 }
