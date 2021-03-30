@@ -490,7 +490,7 @@ export default {
     // 获取用户基本信息
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
-      if (this.userId.staffPhoto) {
+      if (this.userId.staffPhoto && this.userId.trim()) {
         // upload: true表示上传成功
         this.$refs.staffPhoto.fileList = [
           { url: this.userInfo.staffPhoto, upload: true }
@@ -500,20 +500,41 @@ export default {
     // 获取用户详情
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId)
-      if (this.formData.staffPhoto) {
+      if (this.formData.staffPhoto && this.formData.staffPhoto.trim()) {
         this.$refs.myStaffPhoto.fileList = [
           { url: this.formData.staffPhoto, upload: true }
         ]
       }
     },
-    async savePersonal() {
-      await updatePersonal({ ...this.formData, id: this.userId })
-      this.$message.success('保存成功')
-    },
+    // 保存个人详情
     async saveUser() {
+      const fileList = this.$refs.staffPhoto.fileList // 数组
+      // 判断 图片完成了吗
+      if (fileList.some(item => !item.upload)) {
+        this.$message.warning('个人头像未上传完成')
+        return
+      }
       //  调用父组件
-      await saveUserDetailById(this.userInfo)
-      this.$message.success('保存成功')
+      // await saveUserDetailById(this.userInfo)
+      // staffPhoto由于接口问题，必须给一个有空格的字符串才能存进去
+      await saveUserDetailById({
+        ...this.userInfo,
+        staffPhoto: fileList.length ? fileList[0].url : ' '
+      })
+      this.$message.success('保存个人详情成功')
+    },
+    // 保存员工基础信息
+    async savePersonal() {
+      const fileList = this.$refs.myStaffPhoto.fileList
+      if (fileList.some(item => !item.upload)) {
+        this.$message.warning('员工图片未上传完成')
+        return
+      }
+      await updatePersonal({
+        ...this.formData,
+        staffPhoto: fileList.length ? fileList[0].url : ' '
+      })
+      this.$message.success('保存员工基础信息成功')
     }
   }
 }
