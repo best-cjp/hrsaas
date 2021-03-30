@@ -9,9 +9,10 @@
       :on-change="changeFile"
       :before-upload="beforeUpload"
       :file-list="fileList"
-      :class="{ disabled: !fileComputed }"
+      :class="{ disabled: fileComputed }"
       :http-request="upload"
     >
+      <i class="el-icon-plus" />
     </el-upload>
 
     <!-- 进度条 -->
@@ -57,7 +58,7 @@ export default {
   computed: {
     // 如果为true表示不应该显示+号
     fileComputed() {
-      return this.fileComputed === 1
+      return this.fileList.length === 0
     }
   },
   // 监听
@@ -73,7 +74,7 @@ export default {
       this.showDialog = true
     },
     // 删除方法
-    handleRemove(file, fileList) {
+    handleRemove(file) {
       // file文件，fileList删除之后的文件
       // this.fileList = fileList
       // this.fileList = this.fileList.filter(item => item.id !== file.uid) // 将当前的删除文件排除在外
@@ -83,6 +84,7 @@ export default {
     changeFile(file, fileList) {
       // file是当前文件，fileList是当前最新数组
       this.fileList = fileList.map(item => item)
+      // 上传成功 -> 数据进来 -> 腾讯云
     },
     // 控制上传的类型和大小
     beforeUpload(file) {
@@ -100,12 +102,12 @@ export default {
         return false
       }
       // console.log(file)
-      // 已经确定当前上传的就是当前的这个file了
+      // 已经确定当前上传的就是当前的这个file了，记住当前uid
       this.currentFileUid = file.uid
-      this.showDialog = true
+      this.showPercent = true
       return true
     },
-    // 上传操作
+    // 上传
     upload(params) {
       if (params.file) {
         cos.putObject(
@@ -122,7 +124,7 @@ export default {
           },
           (err, data) => {
             // data返回数据之后 应该如何处理
-            console.log(err || data)
+            // console.log(err || data)
             // data中有一个statusCode === 200 的时候说明上传成功
             if (!err && data.statusCode === 200) {
               //   此时说明文件上传成功  要获取成功的返回地址
@@ -138,7 +140,7 @@ export default {
               // 将上传成功的地址 回写到了fileList中
               // 关闭进度条，重置百分比
               setTimeout(() => {
-                this.showDialog = false
+                this.showPercent = false
                 this.percent = 0
               }, 1000)
             }

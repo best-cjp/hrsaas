@@ -58,6 +58,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
+            <image-upload ref="staffPhoto" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -87,10 +88,11 @@
           </el-select>
         </el-form-item>
         <!-- 个人头像 -->
-        <!-- 员工照片 -->
 
+        <!-- 员工照片 -->
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <image-upload ref="myStaffPhoto" />
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -488,10 +490,21 @@ export default {
     // 获取用户基本信息
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
+      if (this.userId.staffPhoto) {
+        // upload: true表示上传成功
+        this.$refs.staffPhoto.fileList = [
+          { url: this.userInfo.staffPhoto, upload: true }
+        ]
+      }
     },
     // 获取用户详情
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId)
+      if (this.formData.staffPhoto) {
+        this.$refs.myStaffPhoto.fileList = [
+          { url: this.formData.staffPhoto, upload: true }
+        ]
+      }
     },
     async savePersonal() {
       await updatePersonal({ ...this.formData, id: this.userId })
