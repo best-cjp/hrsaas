@@ -27,6 +27,7 @@
             <!-- <template slot-scope="{ row }"> -->
             <template v-slot="{ row }">
               <img
+                @click="showQrCode(row.staffPhoto)"
                 v-imagerror="require('@/assets/common/bigUserHeader.png')"
                 :src="row.staffPhoto"
                 alt=""
@@ -92,6 +93,17 @@
     </div>
     <!-- 放置新增弹层 -->
     <add-employee :show-add-emp.sync="showAddEmp" />
+
+    <!-- 放置二维码弹层组件 -->
+    <el-dialog
+      title="二维码"
+      :visible="showCodeDialog"
+      @close="showCodeDialog = false"
+    >
+      <el-row type="flex" justify="center">
+        <canvas ref="myCanvas"></canvas>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -100,6 +112,7 @@ import { getEmployeesList, delEmployeesUser } from '@/api/employees'
 import EmployeesEnum from '@/api/constant/employees' // 引入员工的枚举对象
 import AddEmployee from './components/add-employee.vue'
 import { formatDate } from '@/filters'
+import QrCode from 'qrcode'
 
 export default {
   name: '',
@@ -116,7 +129,8 @@ export default {
         page: 1,
         size: 5,
         total: 0
-      }
+      },
+      showCodeDialog: false
     }
   },
   // 计算
@@ -226,6 +240,16 @@ export default {
           return item[headers[key]]
         })
       )
+    },
+    showQrCode(url) {
+      if (url) {
+        this.showCodeDialog = true
+        this.$nextTick(() => {
+          QrCode.toCanvas(this.$refs.myCanvas, url) // 将地址转化为二维码
+        })
+      } else {
+        this.$message.warning('用户还未上传头像')
+      }
     }
   }
 }
