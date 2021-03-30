@@ -58,7 +58,7 @@ export default {
   computed: {
     // 如果为true表示不应该显示+号
     fileComputed() {
-      return this.fileList.length === 0
+      return this.fileList.length === 1
     }
   },
   // 监听
@@ -152,8 +152,8 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .disabled .el-upload--picture-card {
-  display: none;
+  display: none !important;
 }
 </style>
