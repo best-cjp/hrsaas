@@ -2,7 +2,7 @@
 import layout from '@/layout'
 
 export default {
-  path: '/', //路由地址
+  path: '/permission', //路由地址
   component: layout, // 组件  //给路由规则加一个name
   name: 'permission',
   // 配置二级的路由表
