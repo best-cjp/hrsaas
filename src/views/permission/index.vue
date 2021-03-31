@@ -40,6 +40,7 @@ export default {
     }
   },
   // 计算
+  
   computed: {
     showText() {
       return this.formData.id ? '编辑' : '新增'
@@ -47,6 +48,7 @@ export default {
   },
   // 监听
   watch: {},
+
   // 实例创建后
   created() {
     this.getPermissionList()
