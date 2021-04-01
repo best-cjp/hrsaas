@@ -16,7 +16,7 @@ export default {
       }
     },
     {
-      path: 'detail/:id?',
+      path: 'detail/:id',
       component: () => import('@/views/employees/detail'),
       hidden: true,
       meta: {

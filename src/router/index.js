@@ -60,7 +60,7 @@ export const constantRoutes = [
 ]
 
 // 定义一个动态路由变量
-export const asyncRouter = [
+export const asyncRoutes = [
   departmentsRouter,
   employeesRouter,
   permissionRouter,
@@ -75,7 +75,7 @@ const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: [...constantRoutes, ...asyncRouter]
+    routes: [...constantRoutes, ...asyncRoutes]
   })
 
 const router = createRouter() //实例化一个路由

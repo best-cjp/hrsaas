@@ -61,6 +61,7 @@ const actions = {
     context.commit('deleteToken')
     // 删除用户资料
     context.commit('deleteUserInfo')
+    // resetRouter()
   }
 }
 

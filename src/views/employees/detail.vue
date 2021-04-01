@@ -12,12 +12,12 @@
               :rules="rules"
               :model="userInfo"
             >
-              <el-form-item label="姓名:" props="username">
+              <el-form-item label="姓名:" prop="username">
                 <el-input v-model="userInfo.username" style="width:300px" />
               </el-form-item>
-              <el-form-item label="密码:" props="password2">
+              <el-form-item label="密码:" prop="password2">
                 <el-input
-                  v-model="userInfo.password2"
+                  v-model="userInfo.password"
                   style="width:300px"
                   type="password"
                 />
@@ -72,7 +72,7 @@ export default {
     return {
       UserComponent: 'UserInfo',
       JobInfo: JobInfo,
-      userId: this.$route.params.id,
+      userId: this.$route.params.id, // 这样可以后面直接通过 this.userId进行获取数据
       userInfo: {
         //   专门存放基本信息
         username: '',
