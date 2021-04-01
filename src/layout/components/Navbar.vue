@@ -22,8 +22,12 @@
           <router-link to="/">
             <el-dropdown-item> 首页 </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://gitee.com/xiaomingNP/manpower">
+          <a target="_blank" href="https://github.com/best-cjp">
             <el-dropdown-item>Github</el-dropdown-item>
+          </a>
+
+          <a target="_blank" href="https://gitee.com/hyqxyyy/">
+            <el-dropdown-item>Gitee</el-dropdown-item>
           </a>
 
           <el-dropdown-item divided @click.native="logout">
