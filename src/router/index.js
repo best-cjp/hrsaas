@@ -31,12 +31,12 @@ export const constantRoutes = [
   },
 
   {
-    path: '/dashboard',
+    path: '/',
     component: Layout,
     redirect: '/dashboard',
     children: [
       {
-        path: 'dashboard',
+        path: '/dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index'),
         meta: { title: '首页', icon: 'dashboard' }
@@ -75,7 +75,7 @@ const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: [...constantRoutes, ...asyncRoutes]
+    routes: [...constantRoutes]
   })
 
 const router = createRouter() //实例化一个路由
