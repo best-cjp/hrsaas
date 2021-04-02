@@ -15,7 +15,7 @@ const mutations = {
     // 应该是每次更新 都应该在静态路由的基础上进行追加
   }
 }
- 
+
 const actions = {
   // 筛选权限路由
   // 第二个参数为当前用户的所拥有的菜单权限
@@ -31,7 +31,6 @@ const actions = {
       // 得到的routes是所有模块中满足权限要求的路由数组
       // routes就是当前用户所拥有的的 动态路由的权限
     })
-
     context.commit('setRoutes', routes) // 将动态路由提交给mutations
     return routes // 这里为什么还要return state数据是用来 显示左侧菜单的 return 是给路由addRoutes用的
   }
