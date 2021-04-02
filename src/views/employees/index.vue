@@ -13,7 +13,11 @@
           <el-button size="small" type="danger" @click="exportData"
             >Excel导出</el-button
           >
-          <el-button size="small" type="primary" @click="showAddEmp = true"
+          <el-button
+            size="small"
+            type="primary"
+            @click="showAddEmp = true"
+            v-if="checkPermission('POINT-USER-ADD')"
             >新增员工</el-button
           >
         </template>

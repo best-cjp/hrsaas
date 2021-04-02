@@ -21,6 +21,8 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
 
+import CheckPermission from '@/mixin/checkPermission'
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -53,6 +55,9 @@ Vue.config.productionTip = false
 
 // 注册全局组件
 Vue.use(Component)
+
+// 全局混入检查对象
+Vue.mixin(CheckPermission) // 所有组件都有了一个检查的方法
 
 new Vue({
   el: '#app',
