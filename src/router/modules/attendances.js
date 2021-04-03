@@ -12,6 +12,24 @@ export default {
       component: () => import('@/views/attendances'),
       //左侧导航读取了这里的title信息
       meta: { title: '考勤', icon: 'skill' }
+    },
+    {
+      path: 'archiving',
+      component: () => import('@/views/attendances/historical'),
+      name: 'archiving',
+      hidden: true,
+      meta: {
+        title: '归档'
+      }
+    },
+    {
+      path: 'report/:month',
+      component: () => import('@/views/attendances/report'),
+      name: 'reports',
+      hidden: true,
+      meta: {
+        title: '报表'
+      }
     }
   ]
 }

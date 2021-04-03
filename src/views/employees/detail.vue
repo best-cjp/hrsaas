@@ -17,7 +17,7 @@
               </el-form-item>
               <el-form-item label="密码:" prop="password2">
                 <el-input
-                  v-model="userInfo.password"
+                  v-model="userInfo.password2"
                   style="width:300px"
                   type="password"
                 />
@@ -76,7 +76,7 @@ export default {
       userInfo: {
         //   专门存放基本信息
         username: '',
-        password2: ''
+        password: ''
       },
       rules: {
         username: [
